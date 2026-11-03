@@ -41,6 +41,55 @@ app.get("/api/students/:id", (req, res) => {
     res.json(student);
 });
 
+
+/* Task 4: Update Student Details */
+app.put("/api/students/:id", (req, res) => {
+    const id = Number(req.params.id);
+
+    const index = students.findIndex(s => s.id === id);
+
+    if (index === -1) {
+        return res.status(404).json({
+            message: "Student not found"
+        });
+    }
+
+    students[index] = {
+        ...students[index],
+        ...req.body,
+        id: id
+    };
+
+    res.json({
+        message: "Student updated successfully",
+        student: students[index]
+    });
+});
+
+/* Task 5: Delete Student Record */
+app.delete("/api/students/:id", (req, res) => {
+    const id = Number(req.params.id);
+
+    const index = students.findIndex(s => s.id === id);
+
+    if (index === -1) {
+        return res.status(404).json({
+            message: "Student not found"
+        });
+    }
+
+    const deletedStudent = students[index];
+
+    students.splice(index, 1);
+
+    res.json({
+        message: "Student deleted successfully",
+        student: deletedStudent
+    });
+});
+
+
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
+    
 });
